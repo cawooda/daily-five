@@ -16,22 +16,30 @@
     </section>
 
 </header>
-<section class="level p-4 has-text-black is-flex-direction-row is-justify-content-space-between">
-    <section id="side-bar" class="is-flex level-left has-background-info-light ">
-        <div class="level-item">
+<section class="columns p-4 has-text-black is-flex-direction-row is-justify-content-space-between">
+    <section id="side-bar" class="column is-one-third is-4 has-background-info-light ">
+        <div class="is-flex-direction-col">
             <h2>Search for a City</h2>
-            <button>Search</button>
-            <div id="city list">
+            <form>
+                <input type="search" class="input p3">
+                <button class="input button is-search">Search</button>
+            </form>
+            <div id="city-list" class="column">
+                <p>City</p>
+                <p>City</p>
+                <p>City</p>
+                <p>City</p>
+                
             </div>
         </div>
     </section>
-    <section id="city-information" class="is-flex level-right">
+    <section id="city-information" class="column is-two-thirds has-background-primary-light">
         <div class="level-item">
             <h2>Information about the City</h2>
         </div>
     </section>
 </section>
-<footer class="footer is-fluid has-background-primary-light has-text-black-bis">
+<footer class="footer is-fluid has-background-primary has-text-black-bis">
     <div class="content has-text-centered ">
         <p>
         <strong>Wather</strong> by <a href="https://cawooda.github.com">Andrew Cawood</a>.
