@@ -23,29 +23,42 @@
         id="side-bar"
         class="column is-one-third is-4 has-background-info-light"
       >
-        <div class="column block">
+        <div class="column block content">
           <h2 class="block">Search for a City</h2>
           <form>
-            <input type="search" class="input p3 block" />
-            <button class="input button is-search block">Search</button>
+            <input id="search-input" type="search" class="input p3 block" />
+            <button id="search-button" class="input button is-search block">Search</button>
+            <div id="user-search-message" class="content block">
+              <p id="search-message" class="block"></p>
+            </div>
           </form>
-          <div id="city-list" class="column block">
-            <p class="block">City</p>
-            <p class="block">City</p>
-            <p class="block">City</p>
-            <p class="block">City</p>
+          
+          <div id="city-history-list" class="column block buttons">
+            
           </div>
         </div>
       </section>
       <section
-        id="city-information"
+        id="city-information-section"
         class="column has-text-left is-two-thirds has-background-primary-light"
       >
         <div class="column">
-          <h2 class="is-size-3 has-text-left">Atlanta</h2>
-          <p>Information about atlanta</p>
-          <p>Information about atlanta</p>
-          <p>Information about atlanta</p>
+          <!----city Information Card-->
+          <div class="box" id="city-information-container">
+            <div class="content container">
+              <div class="card">
+                  <div class="card-header">
+                  <h2 class="card-header-title"><strong>CITY:</strong> ${this.name}</h2>
+                  </div>
+                  <div class="card-content content block is-normal">
+                      <p><strong>TEMP: </strong>${this.temp}</p>
+                      <p><strong>WIND: </strong>${this.wind}</p>
+                      <p><strong>HUMIDITY: </strong>${this.humidity}</p>
+                      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+              </div>
+          </div>
+          <!---END CITY INFORMATION CARD--->
+          </div>
         </div>
       </section>
     </section>
