@@ -16,44 +16,51 @@ let app = {
             this.data.searchHistory.unshift(term);
         }
     localStorage.setItem('app',JSON.stringify(appData));
-    refreshApp();
+    refreshSidebar();
 }
 }
 
 //Calls to API
-async function getWeather(lat,long) {
-    const fetch_URL = `api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&appid=${API_KEY}`;
+async function getWeather(lat,lon) {
+    console.log("getweather called");
+    const fetch_URL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
     const headers = {
         method: "GET",
         mode: "cors"
     }
-    const response = await fetch(URL,headers);
-    const json = await response.json();
-    console.log(json);
+    console.log(fetch_URL);
+    const response = await fetch(fetch_URL);
+    const data = await response.json();
+    
+    for (let x = 0; x < 5; x++) {
+        console.log(data.list[x]);
+    }
 }
 
-async function getLatLong(cityName) {
+ async function test () {
+    let testCity = await getLatLon('Sydney');
+    console.log(testCity);
+    getWeather(testCity.lat,testCity.lon);
+}
+
+test();
+
+async function getLatLon(cityName) {
     const fetch_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${LIMIT}&appid=${API_KEY}`;
     
     const response = await fetch(fetch_URL)
     if (response.ok) {
         const data = await response.json();
-        console.log(data);
     return {
         name:data[0].name,
         lat:data[0].lat,
-        long: data[0].long
+        lon: data[0].lon
     }
-}
+    }
     console.log("response status:",response.status);
     return false;
 }
 
-
-console.log(getLatLong('New York'));
-console.log(getLatLong('Jakarta'));
-console.log(getLatLong('Sydney'));
-console.log(getLatLong('Aukland'));
 
 
 
@@ -75,20 +82,21 @@ $searchInput.on('input',function (event) {
 });
 
 //Sidebar functions
-startupApp();
+startupSidebar();
 
-function startupApp (){
-    refreshApp();
+function startupSidebar (){
+    refreshSidebar();
 }
 
-function refreshApp (){
+function refreshSidebar (){
     $cityList.empty();
     let index = 0;
     for (city of appData.searchHistory) {
         if (index > HISTORY_LENGTH) break;
-        const $cityButton = $(`<button class="button block is-normal is-info is-fullwidth">${city}</button>`);
-        $cityButton.on('click',()=>{
-            $searchInput.val(city);
+        const $cityButton = $(`<button data-city="${city}"class="button block is-normal is-info is-fullwidth">${city}</button>`);
+        $cityButton.on('click',(e)=>{
+            console.log($(e.target).data('city'));
+            $searchInput.val($(e.target).data('city'));
             handleSearchClick();
         })
         $cityList.append($cityButton);
@@ -98,19 +106,19 @@ function refreshApp (){
 
 async function handleSearchClick(event) {
     const searchTerm = $searchInput.val();
-    app.addSearchHistory(searchTerm);
-    const city = await getLatLong(searchTerm);
-    if (!city) {
+    const city = await getLatLon(searchTerm);
+    if (city == false) {
         console.log("no city was found",searchTerm);
         $('#user-search-message p').text(`no city was found ${searchTerm}`);
         return false;
     }
-    $('#user-search-message p').text(`Searching for ${searchTerm}...`)
+    app.addSearchHistory(city.name);
+    
 }
 
 
 //MAIN CONTENT JQUERY ITEMS
-const $cityInformation = $('city-information-container');
+const $cityInformation = $('#city-information-container');
 
 
 //MAIN CONTENT FUNCTIONS
