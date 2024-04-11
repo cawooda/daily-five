@@ -4,11 +4,13 @@ const LIMIT = 10;
 const HISTORY_LENGTH = 4;
 
 //localStorage
+
 let appData = JSON.parse(localStorage.getItem('app'));
 if (!appData) appData = {
     searchHistory: [],
 };
 
+//this variable stores information about the app state
 let app = {
     data: appData,
     addSearchHistory: function (term) {
@@ -20,9 +22,41 @@ let app = {
 }
 }
 
-//Calls to API
+//CallDayss to API
+
+function extractFiveDays(allDays) {
+    // these variables create timestamps for the start and end of the 5 day forecast
+    // These are used with allDays to compare 
+    console.log(allDays);
+    const startDay = dayjs().add(1, 'day').startOf('day').unix();
+    console.log("start day: ", startDay);
+    // we need a forcast for each day between these days
+    const endDay = dayjs().add(6, 'day').startOf('day').unix();
+    console.log("start day: ", endDay);
+
+    let arr = [];
+    let i = 0;
+    for (let i = 0; i < allDays.length; x++) {
+        console.log("allDays[i].dt",allDays[i].dt);
+        currentDay = allDays[i].dt;
+        if (currentDay  >= startDay && currentDay < endDay) {
+            console.log(`index:${i} current day:${currentDay}`);
+            // grab one item per day
+            // research slice method. slice can only be used on an array slice(start,end)
+            //slicing the array between 1:00 and 3:00 should give us a single item from the array that we can use
+            // as the 5 day forcast
+            arr.push(day)
+        };
+
+        return arr;
+    }
+
+    //return array;
+}
+
+
 async function getWeather(lat,lon) {
-    console.log("getweather called");
+    console.log("getweather callDaysed");
     const fetch_URL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
     const headers = {
         method: "GET",
@@ -32,9 +66,16 @@ async function getWeather(lat,lon) {
     const response = await fetch(fetch_URL);
     const data = await response.json();
     
-    for (let x = 0; x < 5; x++) {
-        console.log(data.list[x]);
-    }
+    extractFiveDays(data.list);
+
+    /* for (let x = 0; x < 5; x++) {
+        const day = data.list[x].dt_txt;
+        const temp = data.list[x].main.temp;
+        //const day = data.list[x].dt_txt;
+        console.log("date of dt_txt: ",day);
+        console.log("date of list.main.temp: ",temp);
+
+    } */
 }
 
  async function test () {
@@ -81,7 +122,7 @@ $searchInput.on('input',function (event) {
     console.log("can predict: ", searchPredict);
 });
 
-//Sidebar functions
+//Sidebar functions 
 startupSidebar();
 
 function startupSidebar (){
