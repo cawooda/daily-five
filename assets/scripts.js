@@ -25,39 +25,24 @@ let app = {
 //CallDayss to API
 
 function extractFiveDays(allDays) {
-    // these variables create timestamps for the start and end of the 5 day forecast
-    // These are used with allDays to compare 
-    console.log(allDays);
-    const startDay = dayjs().add(1, 'day').startOf('day').unix();
-    console.log("start day: ", startDay);
-    // we need a forcast for each day between these days
-    const endDay = dayjs().add(6, 'day').startOf('day').unix();
-    console.log("start day: ", endDay);
-
-    let arr = [];
-    let i = 0;
-    for (let i = 0; i < allDays.length; x++) {
-        console.log("allDays[i].dt",allDays[i].dt);
-        currentDay = allDays[i].dt;
-        if (currentDay  >= startDay && currentDay < endDay) {
-            console.log(`index:${i} current day:${currentDay}`);
-            // grab one item per day
-            // research slice method. slice can only be used on an array slice(start,end)
-            //slicing the array between 1:00 and 3:00 should give us a single item from the array that we can use
-            // as the 5 day forcast
-            arr.push(day)
-        };
-
-        return arr;
+    // this takes all forcast data and extracts a time on each day
+    let returnArray = [];
+    //looops through all days and returns a single time at 3. this results in a 5 object array being returned.
+    for (currentDay of allDays) {
+     
+        if (dayjs(currentDay.dt_txt).hour() === 3) {
+            returnArray.push(currentDay);
+        }
+    }
+        return returnArray;
     }
 
-    //return array;
-}
-
-
+//ASYNC FUNCTIONS and API CALLS
 async function getWeather(lat,lon) {
-    console.log("getweather callDaysed");
-    const fetch_URL = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+    //get the forcast and turn it into an 5 object array for use in the forecast display.
+    const latLong = await getLatLon(city);
+    
+    const fetch_URL = `http://api.openweathermap.org/data/2.5/forecast?lat=${latLong.lat}&lon=${latLong.lon}&appid=${API_KEY}`;
     const headers = {
         method: "GET",
         mode: "cors"
@@ -66,25 +51,9 @@ async function getWeather(lat,lon) {
     const response = await fetch(fetch_URL);
     const data = await response.json();
     
-    extractFiveDays(data.list);
-
-    /* for (let x = 0; x < 5; x++) {
-        const day = data.list[x].dt_txt;
-        const temp = data.list[x].main.temp;
-        //const day = data.list[x].dt_txt;
-        console.log("date of dt_txt: ",day);
-        console.log("date of list.main.temp: ",temp);
-
-    } */
+    const forecastDays = extractFiveDays(data.list);
+    return forecastDays;
 }
-
- async function test () {
-    let testCity = await getLatLon('Sydney');
-    console.log(testCity);
-    getWeather(testCity.lat,testCity.lon);
-}
-
-test();
 
 async function getLatLon(cityName) {
     const fetch_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${LIMIT}&appid=${API_KEY}`;
@@ -102,7 +71,27 @@ async function getLatLon(cityName) {
     return false;
 }
 
+//MAINCONTENT JQUERY ITEMS
+const $cityForeCastContainer = $('forecast-information-container');
+const $cityForecastCards = $cityForeCastContainer.find('.card');
+console.log($cityForecastCards);
 
+//MAIN CONTENT EVENT LISTENERS
+
+//MAIN CONTENT FUNCTIONS
+
+async function startupMainContent () {
+    const lastSearch = appData.searchHistory[0];
+    if (lastSearch) {
+    const forecast = await getWeather(lastSearch)
+    console.log("forecast",forecast);
+    refreshMainContent(forecast);
+    }
+}
+
+function refreshMainContent (forecast) {
+    
+}
 
 
 //SIDEBAR JQERY ITEMS
@@ -125,8 +114,9 @@ $searchInput.on('input',function (event) {
 //Sidebar functions 
 startupSidebar();
 
-function startupSidebar (){
-    refreshSidebar();
+async function startupSidebar (){
+    await refreshSidebar();
+    startupMainContent();
 }
 
 function refreshSidebar (){
@@ -147,14 +137,14 @@ function refreshSidebar (){
 
 async function handleSearchClick(event) {
     const searchTerm = $searchInput.val();
-    const city = await getLatLon(searchTerm);
-    if (city == false) {
+    const forecast = await getWeather(searchTerm);
+    if (forecast == false) {
         console.log("no city was found",searchTerm);
         $('#user-search-message p').text(`no city was found ${searchTerm}`);
         return false;
     }
     app.addSearchHistory(city.name);
-    
+    refreshMainContent(forecast);
 }
 
 
