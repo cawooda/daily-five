@@ -31,7 +31,7 @@ async function getWeather(city) {
     //get the forcast and turn it into an 5 object array for use in the forecast display.
     const latLong = await getLatLon(city);
     
-    const fetch_URL = `http://api.openweathermap.org/data/2.5/forecast?lat=${latLong.lat}&lon=${latLong.lon}&appid=${API_KEY}`;
+    const fetch_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latLong.lat}&lon=${latLong.lon}&appid=${API_KEY}`;
     const headers = {
         method: "GET",
         mode: "cors"
@@ -59,7 +59,7 @@ async function getWeather(city) {
 }
 
 async function getLatLon(cityName) {
-    const fetch_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${LIMIT}&appid=${API_KEY}`;
+    const fetch_URL = `https://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=${LIMIT}&appid=${API_KEY}`;
     
     const response = await fetch(fetch_URL)
     if (response.ok) {
