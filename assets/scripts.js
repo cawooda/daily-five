@@ -24,21 +24,10 @@ let app = {
 
 //CallDayss to API
 
-function extractFiveDays(allDays) {
-    // this takes all forcast data and extracts a time on each day
-    let returnArray = [];
-    //looops through all days and returns a single time at 3. this results in a 5 object array being returned.
-    for (currentDay of allDays) {
-     
-        if (dayjs(currentDay.dt_txt).hour() === 3) {
-            returnArray.push(currentDay);
-        }
-    }
-        return returnArray;
-    }
+
 
 //ASYNC FUNCTIONS and API CALLS
-async function getWeather(lat,lon) {
+async function getWeather(city) {
     //get the forcast and turn it into an 5 object array for use in the forecast display.
     const latLong = await getLatLon(city);
     
@@ -52,7 +41,21 @@ async function getWeather(lat,lon) {
     const data = await response.json();
     
     const forecastDays = extractFiveDays(data.list);
-    return forecastDays;
+    return {city: city,
+        forecast: forecastDays
+    }
+    function extractFiveDays(allDays) {
+        // this takes all forcast data and extracts a time on each day
+        let returnArray = [];
+        //looops through all days and returns a single time at 3. this results in a 5 object array being returned.
+        for (currentDay of allDays) {
+         
+            if (dayjs(currentDay.dt_txt).hour() === 3) {
+                returnArray.push(currentDay);
+            }
+        }
+            return returnArray;
+        }
 }
 
 async function getLatLon(cityName) {
@@ -71,27 +74,7 @@ async function getLatLon(cityName) {
     return false;
 }
 
-//MAINCONTENT JQUERY ITEMS
-const $cityForeCastContainer = $('forecast-information-container');
-const $cityForecastCards = $cityForeCastContainer.find('.card');
-console.log($cityForecastCards);
 
-//MAIN CONTENT EVENT LISTENERS
-
-//MAIN CONTENT FUNCTIONS
-
-async function startupMainContent () {
-    const lastSearch = appData.searchHistory[0];
-    if (lastSearch) {
-    const forecast = await getWeather(lastSearch)
-    console.log("forecast",forecast);
-    refreshMainContent(forecast);
-    }
-}
-
-function refreshMainContent (forecast) {
-    
-}
 
 
 //SIDEBAR JQERY ITEMS
@@ -143,16 +126,82 @@ async function handleSearchClick(event) {
         $('#user-search-message p').text(`no city was found ${searchTerm}`);
         return false;
     }
-    app.addSearchHistory(city.name);
+    app.addSearchHistory(searchTerm);
     refreshMainContent(forecast);
 }
 
 
-//MAIN CONTENT JQUERY ITEMS
-const $cityInformation = $('#city-information-container');
+//MAINCONTENT JQUERY ITEMS
+const $cityForeCastContainer = $('forecast-information-container');
+const $cityForecastCards = $('.card');
+//console.log("$cityforecast cards", $cityForecastCards);
 
+//MAIN CONTENT EVENT LISTENERS
 
 //MAIN CONTENT FUNCTIONS
+
+async function startupMainContent () {
+    const lastSearch = appData.searchHistory[0];
+    if (lastSearch) {
+    const forecast = await getWeather(lastSearch)
+    await refreshMainContent(forecast);
+    }
+}
+
+async function refreshMainContent (forecast) {
+    
+    
+    let i = 0;
+    for (card of $cityForecastCards) {
+        
+        const dateTime = dayjs(forecast.forecast[i].dt_txt).format('mm-dddd')
+        const $card = $(card);
+        const city = forecast.city;
+        const day = dayjs(forecast.forecast[i].dt_txt).format('dddd');
+        const icon =  `https://openweathermap.org/img/wn/${forecast.forecast[i].weather[0].icon}.png`;
+        
+        
+        const faranheit = forecast.forecast[i].main.temp;
+        const temp = (faranheit - 273.15).toFixed(2);
+       
+        const windSpeed = (forecast.forecast[i].wind.speed*1.944).toFixed(2);
+        const windDirection = getWindDirection(forecast.forecast[i].wind.deg);
+        const wind = `${windSpeed} knots ${windDirection}`;
+        const humidity = forecast.forecast[i].main.humidity;
+    
+        ($card.hasClass('hero')) ? $card.find('.card-header-title').text(city) : $card.find('.card-header-title').text(day);
+        console.log("immage attr", $card.find('.weather-icon').attr("src"));
+
+        
+
+        $card.find('.weather-icon').attr("src",`${icon}`);
+        $card.find('.temp').text(`${temp} `);
+        $card.find('.wind').text(wind);
+        $card.find('.humidity').text(humidity);
+        i++
+    }
+
+    function getWindDirection(deg) {
+        returnDirection = '';
+        switch (true) {
+            case (deg > 270) || (deg < 90) : returnDirection =  returnDirection + "N";
+                break;
+            default : returnDirection =  returnDirection + "S";
+                break;                
+        }
+        switch (true) {
+            case (deg > 180)  : returnDirection =  returnDirection + "W";
+                break;
+            default : returnDirection =  returnDirection + "E";
+                break;                
+        }
+        return returnDirection;
+         
+    }
+
+}
+
+
 
 function generateCityCard (cityInfo) {
     

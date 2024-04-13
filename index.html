@@ -7,13 +7,18 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
     <title>Weather Map</title>
   </head>
   <body>
     <header id="site-title">
-      <section class="hero is-fluid is-link">
+      <section class="hero is-fluid is-link is-light">
         <div class="hero-body">
-          <h1 class="title">Weather DashBoard</h1>
+          <i class="fa-solid icon is-large fas fa-2x fa-cloud-sun"></i>
+          <h1 class="title">Daily 5</h1>
           <h2 class="subtitle">Connecting you to the forecast</h2>
         </div>
       </section>
@@ -45,107 +50,95 @@
         
           <!----city Information Card-->
           <div class="box" id="forecast-information-container">
+
           <div class="content container">
-              <div class="card">
+              <div class="hero card">
                   <div class="card-header">
-                  <h2 class="card-header-title"><strong>CITY:</strong> ${this.name}</h2>
+                  <h2 class="card-header-title"> </h2>
                   </div>
                   <div class="card-content content block is-normal">
-                      <p><strong>TEMP: </strong>${this.temp}</p>
-                      <p><strong>WIND: </strong>${this.wind}</p>
-                      <p><strong>HUMIDITY: </strong>${this.humidity}</p>
-                      <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                    <img  class="weather-icon image is-32x32" src="#">
+                    <p><strong>TEMP: </strong><span class="temp">${this.temp}</span><span>&deg;C</span></p>
+                    <p><strong>WIND: </strong><p class="wind">${this.wind}</p></p>
+                    <p><strong>HUMIDITY: </strong><p class="humidity">${this.humidity}</p></p>
+                      <time class="datetime">11:09 PM - 1 Jan 2016</time>
               </div>
           </div>
           
           </div>
           <!---END CITY INFORMATION CARD--->
           <div class="columns">
-            <div class="column is-one-fifth">
-              <div class="" id="city-information-container">
-                <div class="content container">
+            <div class="column is-one-fourth">
+              <div class="" id="city-information-container ">
+                <div class="content container ">
                     <div class="card">
-                        <div class="card-header">
-                      <h4 class="card-header-title">Day:${this.day}</h4>
-                          </div>
-                        <div class="card-content content block is-normal">
-                          <p><strong>TEMP: </strong>${this.temp}</p>
-                          <p><strong>WIND: </strong>${this.wind}</p>
-                          <p><strong>HUMIDITY: </strong>${this.humidity}</p>
-                          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+                      <div class="card-header has-background-dark">
+                        <h4 class="card-header-title has-text-primary-light">Day:${this.day}</h4>
+                      </div>
+                      <div class="card-content content block is-normal has-background-dark has-text-primary-light">
+                        <img  class="weather-icon image is-32x32" src="#">
+                        <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>TEMP: </strong><span class="temp">${this.temp}</span><span>&deg;C</span></p>
+                        <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>WIND: </strong><p class="wind">${this.wind}</p></p>
+                        <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>HUMIDITY: </strong><p class="humidity">${this.humidity}</p></p>
+                        <time class="datetime">11:09 PM - 1 Jan 2016</time>
                       </div>
                     </div>
                 </div>
               </div>
             </div>
             
-            <div class="column is-one-fifth">
+            <div class="column is-one-fourth">
               <div class="" id="city-information-container">
                 <div class="content container">
                     <div class="card">
-                        <div class="card-header">
-                      <h4 class="card-header-title">Day:${this.day}</h4>
+                      <div class="card-header has-background-dark">
+                          <h4 class="card-header-title has-text-primary-light">Day:${this.day}</h4>
                           </div>
-                        <div class="card-content content block is-normal">
-                          <p><strong>TEMP: </strong>${this.temp}</p>
-                          <p><strong>WIND: </strong>${this.wind}</p>
-                          <p><strong>HUMIDITY: </strong>${this.humidity}</p>
-                          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                      </div>
+                          <div class="card-content content block is-normal has-background-dark has-text-primary-light">
+                            <img  class="weather-icon image is-32x32" src="#">
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>TEMP: </strong><span class="temp">${this.temp}</span><span>&deg;C</span></p>
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>WIND: </strong><p class="wind">${this.wind}</p></p>
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>HUMIDITY: </strong><p class="humidity">${this.humidity}</p></p>
+                            <time class="datetime">11:09 PM - 1 Jan 2016</time>
+                          </div>
                     </div>
                 </div>
               </div>
             </div> 
 
-            <div class="column is-one-fifth">
+            <div class="column is-one-fourth">
               <div class="" id="city-information-container">
                 <div class="content container">
                     <div class="card">
-                        <div class="card-header">
-                      <h4 class="card-header-title">Day:${this.day}</h4>
+                      <div class="card-header has-background-dark">
+                          <h4 class="card-header-title has-text-primary-light">Day:${this.day}</h4>
                           </div>
-                        <div class="card-content content block is-normal">
-                          <p><strong>TEMP: </strong>${this.temp}</p>
-                          <p><strong>WIND: </strong>${this.wind}</p>
-                          <p><strong>HUMIDITY: </strong>${this.humidity}</p>
-                          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                      </div>
+                          <div class="card-content content block is-normal has-background-dark has-text-primary-light">
+                            <img  class="weather-icon image is-32x32" src="#">
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>TEMP: </strong><span class="temp">${this.temp}</span><span>&deg;C</span></p>
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>WIND: </strong><p class="wind">${this.wind}</p></p>
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>HUMIDITY: </strong><p class="humidity">${this.humidity}</p></p>
+                            <time class="datetime">11:09 PM - 1 Jan 2016</time>
+                          </div>
                     </div>
                 </div>
               </div>
             </div> 
 
-            <div class="column is-one-fifth">
+            <div class="column is-one-fourth">
               <div class="" id="city-information-container">
                 <div class="content container">
                     <div class="card">
-                        <div class="card-header">
-                      <h4 class="card-header-title">Day:${this.day}</h4>
+                      <div class="card-header has-background-dark">
+                          <h4 class="card-header-title has-text-primary-light">Day:${this.day}</h4>
                           </div>
-                        <div class="card-content content block is-normal">
-                          <p><strong>TEMP: </strong>${this.temp}</p>
-                          <p><strong>WIND: </strong>${this.wind}</p>
-                          <p><strong>HUMIDITY: </strong>${this.humidity}</p>
-                          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </div> 
-
-            <div class="column is-one-fifth">
-              <div class="" id="city-information-container">
-                <div class="content container">
-                    <div class="card">
-                        <div class="card-header">
-                      <h4 class="card-header-title">Day:${this.day}</h4>
+                          <div class="card-content content block is-normal has-background-dark has-text-primary-light">
+                            <img  class="weather-icon image is-32x32" src="#">
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>TEMP: </strong><span class="temp">${this.temp}</span><span>&deg;C</span></p>
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>WIND: </strong><p class="wind">${this.wind}</p></p>
+                            <p class="has-text-primary-light"><strong <p class="has-text-primary-light"></p>HUMIDITY: </strong><p class="humidity">${this.humidity}</p></p>
+                            <time class="datetime">11:09 PM - 1 Jan 2016</time>
                           </div>
-                        <div class="card-content content block is-normal">
-                          <p><strong>TEMP: </strong>${this.temp}</p>
-                          <p><strong>WIND: </strong>${this.wind}</p>
-                          <p><strong>HUMIDITY: </strong>${this.humidity}</p>
-                          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                      </div>
                     </div>
                 </div>
               </div>
